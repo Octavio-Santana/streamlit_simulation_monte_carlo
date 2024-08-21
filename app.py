@@ -16,6 +16,8 @@ n_simulation = 500  # Number of Events
 growth_rate = 0.387  # Monthly growth in meters
 total_trees = 20  # Number of trees pruned per day
 total_day = 20  # Number of days in a month
+total_teams = 1 # Number of pruning teams
+
 METRICS = {
     'PRECISION': 0.6820,
     'RECALL': 0.4496,
@@ -26,7 +28,7 @@ METRICS = {
 st.title('Tree Growth and Pruning Simulation')
 
 st.sidebar.header('Simulation Parameters')
-N = st.sidebar.number_input('Number of trees', min_value=100, max_value=5000, value=N)
+N = st.sidebar.number_input('Number of trees', min_value=100, max_value=50000, value=N)
 T = st.sidebar.number_input('Number of months', min_value=12, max_value=120, value=T)
 critical_distance = st.sidebar.number_input('Critical distance (m)', 
                                              min_value=0.01, 
@@ -42,7 +44,8 @@ growth_rate = st.sidebar.number_input('Monthly growth (m)',
                                        value=growth_rate)
 total_trees = st.sidebar.number_input('Number of trees pruned per day', min_value=1, max_value=100, value=total_trees)
 total_day = st.sidebar.number_input('Number of days in a month', min_value=1, max_value=31, value=total_day)
-total_tree = total_trees * total_day
+total_teams = st.sidebar.number_input('Number of pruning teams', min_value=1, max_value=30, value=total_teams)
+total_tree = total_trees * total_day * total_teams
 
 # Create the efficiency selector
 efficiency = st.sidebar.selectbox(
@@ -108,3 +111,7 @@ if st.button('Run Simulation'):
 
     # Exibir o gráfico no Streamlit
     st.plotly_chart(fig, use_container_width=True)
+
+    df_table = create_table(df=df_melted)
+    st.subheader('Average Pruning Estimates for Selected Months')
+    st.table(df_table)
