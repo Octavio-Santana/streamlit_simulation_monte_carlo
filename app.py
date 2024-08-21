@@ -112,6 +112,6 @@ if st.button('Run Simulation'):
     # Exibir o gráfico no Streamlit
     st.plotly_chart(fig, use_container_width=True)
 
-    df_table = create_table(df=df_melted)
+    df_table = create_table(df=df_melted, total_months=T)
     st.subheader('Average Pruning Estimates for Selected Months')
     st.table(df_table)

@@ -80,14 +80,17 @@ def create_dataframe_simulation(data, T):
 
     return df_melted
 
-def create_table(df):
+def create_table(df, total_months):
     #  Calcular a média dos valores por mês e por estimativa
     df_mean = df.groupby(['variable', 'Estimativa'], as_index=False)['value'].mean()
 
     table = {'Mês': [], 'Chamadas Falsas':[], 'Podas Reais':[], 
          'Árvores criticas não podadas':[]}
 
-    for i in [1, 6, 12, 18, 24, 30, 36]:
+    months = np.arange(1, total_months+1)
+    rest = months % 6
+    months = np.append([1], months[rest == 0]) 
+    for i in months:
         arr = df_mean.loc[df_mean['variable'] == f'Mês {i}', ['Estimativa', 'value']].values
         table['Mês'].append(i)
         for col, val in arr:
